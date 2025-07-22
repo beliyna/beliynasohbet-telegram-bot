@@ -293,7 +293,7 @@ const sohbetKomutlari = {
   "firewall": () => "senin kalbin gibi, kimse geçemez",  
   "sahip çık": () => "sahipsiz kopek"
 };
-};
+
 
 // HTTP isteği yapacak bir örnek fonksiyon (axios kullanarak)
 async function fetchExampleData() {
