@@ -292,7 +292,7 @@ const sohbetKomutlari = {
   "firewall": () => "senin kalbin gibi, kimse geçemez",  
   "sahip çık": () => "sahipsiz kopek"
 };
-
+ 
 async function typingEffect(msg) {
   await bot.sendChatAction(msg.chat.id, "typing");
   await delay(1500);
