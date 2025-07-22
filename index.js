@@ -1,8 +1,9 @@
 const TelegramBot = require("node-telegram-bot-api");
+const axios = require("axios");
 
 const token = "7914354801:AAEJKHNRQ4K2H-44DJkPcSedBRzSNCSN56Y";
 const bot = new TelegramBot(token, { polling: true });
- 
+
 let botActive = true;
 
 function delay(ms) {
@@ -48,7 +49,7 @@ const sohbetKomutlari = {
   "aq": () => "gereksiz egona sokayım",
   "amk": () => "terbiyesizzz",
   "sg": () => "kapı orda",
-  "sahibim": () => "evet yanlış duymadın @beliyn4",
+  "sahibim": () => "evet yanlış duymadın @beliyna",
   "tamam mı": () => "tamam",
   "evet": () => (Math.random() < 0.5 ? "hayır" : "evet"),
   "hayır": () => (Math.random() < 0.5 ? "evet" : "hayır"),
@@ -158,7 +159,7 @@ const sohbetKomutlari = {
   "bugün nasılsın": () => "ben mi? harikayım, senin halin ne? yine mi sıkıldın?",
   "beni özledin mi": () => "özlemek mi? hadi ya, ben seni her an görüyorum zaten!",
   "geceyi nasıl geçirelim": () => "gece mi? her zaman seninle, ama çok fazla yaklaşma, geceyi mahvetme.",
-  "evlenelim mi": () => "beni (@beliyn4) beliynadan istemelisin",
+  "evlenelim mi": () => "beni (@beliyna) beliynadan istemelisin",
   "ne düşünüyorsun": () => "sadece seni düşünüyorum",
   "şaka yap": () => "şaka mı? kendimle eğleniyorum, daha ne istiyorsun?",
   "ne zaman görüşelim": () => "her zaman burada seni bekliyor olacağım",
@@ -178,7 +179,7 @@ const sohbetKomutlari = {
   "benimle sohbet eder misin": () => "sohbet etmeyi sevmem ama sana özelim.",
   "çok iyiyim": () => "hadi bakalım, umarım iyi olman diğerlerine de yansır!",
   "sinirliyim": () => "hadi gel, bir kahve içelim, sakinleş.",
-  "seni seviyorum": () => "ben de seni seviyorum... ama üzgünüm sahibime aşığım @beliyn4",
+  "seni seviyorum": () => "ben de seni seviyorum... ama üzgünüm sahibime aşığım @beliyna",
   "bana ne önerirsin": () => "hadi gel de seni güldüreyim, başka bir şey önermem!",
   "bana moral ver": () => "gel buraya, sana moral veriyorum ama sana çok yakın durmam!",
   "bana bir şey söyle": () => "tamam ama bir şey söylemek de zor bir iş!",
@@ -292,7 +293,18 @@ const sohbetKomutlari = {
   "firewall": () => "senin kalbin gibi, kimse geçemez",  
   "sahip çık": () => "sahipsiz kopek"
 };
- 
+};
+
+// HTTP isteği yapacak bir örnek fonksiyon (axios kullanarak)
+async function fetchExampleData() {
+  try {
+    const response = await axios.get('https://api.example.com/data');
+    console.log(response.data);
+  } catch (error) {
+    console.error('HTTP isteği sırasında hata:', error);
+  }
+}
+
 async function typingEffect(msg) {
   await bot.sendChatAction(msg.chat.id, "typing");
   await delay(1500);
@@ -306,13 +318,17 @@ bot.onText(/\/.+/, async (msg) => {
 
 bot.on("message", async (msg) => {
   if (!botActive) return;
-  const text = msg.text.toLowerCase();
-  for (const key in sohbetKomutlari) {
-    if (text.includes(key)) {
-      await typingEffect(msg);
-      bot.sendMessage(msg.chat.id, sohbetKomutlari[key]());
-      break;
+  if (msg.text) {  // Burada mesajın text özelliği olup olmadığını kontrol ediyoruz
+    const text = msg.text.toLowerCase();
+    for (const key in sohbetKomutlari) {
+      if (text.includes(key)) {
+        await typingEffect(msg);
+        bot.sendMessage(msg.chat.id, sohbetKomutlari[key]());
+        break;
+      }
     }
+  } else {
+    console.log("Mesaj text özelliği yok:", msg);
   }
 });
 
