@@ -330,6 +330,11 @@ bot.on("message", async (msg) => {
   } else {
     console.log("Mesaj text özelliği yok:", msg);
   }
-});
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-console.log("Bot aktif şekilde çalışıyor...");
+app.get('/', (req, res) => res.send('Bot çalışıyor...'));
+app.listen(PORT, () => {
+  console.log(`Web server aktif: ${PORT}`);
+});
